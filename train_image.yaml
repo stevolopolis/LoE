@@ -1,0 +1,30 @@
+TRAIN_CONFIGS:
+  out_dir: loe
+  lr: 1e-4
+  iterations: 10000
+  save_interval: 100
+  device: cuda:1
+
+DATASET_CONFIGS:
+  data_type: image
+  file_path: ../datasets/kodak/kodim19.png
+  color_mode: RGB              # RGB or L (grayscale)
+
+
+WANDB_CONFIGS:
+  use_wandb: 1
+  wandb_project: image
+  wandb_entity: loe
+  group: kodak
+
+defaults:
+  - model_config: loe
+
+# hydra logging
+hydra:
+  run:
+    dir: outputs/${TRAIN_CONFIGS.out_dir}/hydra_configs/${now:%Y-%m-%d-%H-%M-%S}
+    
+  sweep:
+    dir: outputs/${TRAIN_CONFIGS.out_dir}/hydra_configs/${now:%Y-%m-%d-%H-%M-%S}/${hydra.job.name}
+    subdir: ${hydra.job.num}
